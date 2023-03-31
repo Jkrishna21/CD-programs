@@ -1,0 +1,19 @@
+8). Write a LEX specification to find whether the given input is positive or
+negative number .
+%{
+#include<stdio.h>
+%}
+%%
+"+"?[0-9]+"."?[0-9]+? {printf("%s is Positive Number \n", yytext);}"-"[0-9]+"."?[0-9]+? {printf("%s is Negative Number\n", yytext);}
+%%
+int yywrap()
+{
+return 1;
+}
+int main()
+{
+ printf("Enter the input : ");
+ yylex();
+}
+
+

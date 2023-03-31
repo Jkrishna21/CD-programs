@@ -1,0 +1,24 @@
+10). Write a LEX specification to find number of characters, words and lines
+from the given input file.
+%{
+int nlines,nwords,nchars;
+%}
+%%
+[\n] { nchars++;nlines++; }
+[^ \n\t]+ {nwords++, nchars=nchars+yyleng;}
+. {nchars++;}
+"\n" { printf("Number of Lines = %d\nNumber of Words = %d\nNumber of Characters =
+%d",nlines,nwords,nchars);}
+%%
+int yywrap(void)
+{
+ return 1;
+}
+int main(int argc, char*argv[])
+{
+yyin=fopen("bomb.txt","r");
+yylex();
+printf("Number of Lines = %d\nNumber of Words = %d\nNumber of Characters =
+%d",nlines,nwords,nchars);
+return 0;
+}

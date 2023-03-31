@@ -1,0 +1,31 @@
+6). Write a LEX specification which takes input from a file (a C’ program) and
+recognize valid identifiers, keywords.
+
+%{
+#include <stdlib.h>
+#include <stdio.h>
+int n = 0 ;
+%}
+%%
+"auto"|"double"|"int"|"struct"|"break"|"else"|"long"|"switch"|"case"|"enum"
+{n++;printf("keyword : %s", yytext);}
+"register"|"typedef"|"char"|"extern"|"return"|"union"|"const"|"float"|"short"|"unsigned"|"continue" {n++;printf("keyword : %s", yytext);}
+"for"|"signed"|"void"|"default"|"goto"|"sizeof"|"voltile"|"do"|"if"|"static"|"while"|
+"else" {n++;printf("keyword : %s", yytext);}
+[a-zA-Z_][a-zA-Z0-9_]* {n++;printf("\nidentifier : %s",yytext);}
+"+"|"-
+"|"*"|"/"|"%"|"=="|"!="|">"|"<"|">="|"<="|"&&"|"||"|"!"|"&"|"|"|"^"|"~"|">>"|"<<"|"="|"+="|"-=" {n++;printf("\noperator : %s", yytext);}
+[(){}|, ;_:] {n++;printf("\nseparator : %s", yytext);}
+[0-9]*"."[0-9]+ {n++;printf("\nfloat : %s", yytext);}
+[0-9]+ {n++;printf("\ninteger : %s", yytext);}
+"\n" {printf("\nTotal number of tokens = %d\n",n); n = 0;}
+%%
+int yywrap()
+{
+return 1;
+}
+int main()
+{
+printf("Enter input : ");
+yylex();
+}

@@ -1,0 +1,44 @@
+
+18). Write YACC Specification to to accept a binary number and convert it
+into decimal number.
+Lex Program –
+%{
+#include<stdio.h>
+#include<stdlib.h>
+#include"btod.tab.h"
+extern int yylval;
+%}
+%%
+[0] {yylval=0;return ZERO;}
+[1] {yylval=1;return ONE;}
+[ \t] {;}
+\n {return 0;}
+. {return yytext[0];}
+%%
+int yywrap()
+{
+return 1;
+}
+Yacc Program –
+%{
+#include<stdio.h>
+#include<stdlib.h>
+void yyerror(char *s);
+%}
+%token ZERO ONE
+%%
+N: L {printf("%d", $$);}
+L: L B {$$=$1*2+$2;}
+| B {$$=$1;}
+B:ZERO {$$=$1;}
+|ONE {$$=$1;};
+%%
+int main()
+{
+printf("Enter the binary number : ");
+while(yyparse());
+}
+yyerror(char *s)
+{
+fprintf(stdout, "\n%s", s);
+}

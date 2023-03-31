@@ -1,0 +1,31 @@
+7.Write a LEX specification to find Vowels, Consonants, Digits and
+Operators from the given input .
+%{
+int consonant=0;
+int vowel=0;
+int digit=0;
+int operator = 0;
+%}
+%%
+[aeiouAEIOU] {vowel++;}
+[a-zA-Z] {consonant++;}
+[0-9] {digit++;}
+"+"|"-
+"|"*"|"/"|"%"|"=="|"!="|">"|"<"|">="|"<="|"&&"|"||"|"!"|"&"|"|"|"^"|"~"|">>"|"<<"|"="|"+="|"-=" {operator++;}
+"\n" {printf("Number of Vowels, Consonants, Digits, Operators :
+%d , %d , %d ,
+%d",vowel,consonant,digit,operator);vowel=0,consonant=0,digit=0,operator=0;}
+%%
+int yywrap()
+{
+return 1;
+}
+int main()
+{
+printf("Enter input : ");
+yylex();
+printf("Number of Vowels : %d",vowel);
+printf("Number of Consonants : %d",consonant);
+printf("Number of digits : %d",digit);
+printf("Number of operators = %d\n",operator);
+}

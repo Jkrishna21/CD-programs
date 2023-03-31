@@ -1,0 +1,18 @@
+9). Write a LEX specification to find whether the given input is odd or even
+number .
+%{
+#include<stdio.h>
+%}
+%%
+[0-9]*[02468] {printf("%s is Even number",yytext);}
+[0-9]*[13579] {printf("%s is Odd number",yytext);}
+%%
+int yywrap()
+{
+return 1;
+}
+int main()
+{
+ printf("\nEnter the input : ");
+ yylex();
+}
