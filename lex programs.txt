@@ -1,0 +1,129 @@
+6). Write a LEX specification which takes input from a file (a C’ program) and
+recognize valid identifiers, keywords.
+
+
+%{
+#include <stdlib.h>
+#include <stdio.h>
+int n = 0 ;
+%}
+%%
+"auto"|"double"|"int"|"struct"|"break"|"else"|"long"|"switch"|"case"|"enum"
+{n++;printf("keyword : %s", yytext);}
+"register"|"typedef"|"char"|"extern"|"return"|"union"|"const"|"float"|"short"|"unsigned"|"continue" {n++;printf("keyword : %s", yytext);}
+"for"|"signed"|"void"|"default"|"goto"|"sizeof"|"voltile"|"do"|"if"|"static"|"while"|
+"else" {n++;printf("keyword : %s", yytext);}
+[a-zA-Z_][a-zA-Z0-9_]* {n++;printf("\nidentifier : %s",yytext);}
+"+"|"-
+"|"*"|"/"|"%"|"=="|"!="|">"|"<"|">="|"<="|"&&"|"||"|"!"|"&"|"|"|"^"|"~"|">>"|"<<"|"="|"+="|"-=" {n++;printf("\noperator : %s", yytext);}
+[(){}|, ;_:] {n++;printf("\nseparator : %s", yytext);}
+[0-9]*"."[0-9]+ {n++;printf("\nfloat : %s", yytext);}
+[0-9]+ {n++;printf("\ninteger : %s", yytext);}
+"\n" {printf("\nTotal number of tokens = %d\n",n); n = 0;}
+%%
+int yywrap()
+{
+return 1;
+}
+int main()
+{
+printf("Enter input : ");
+yylex();
+}
+
+
+7.Write a LEX specification to find Vowels, Consonants, Digits and
+Operators from the given input .
+%{
+int consonant=0;
+int vowel=0;
+int digit=0;
+int operator = 0;
+%}
+%%
+[aeiouAEIOU] {vowel++;}
+[a-zA-Z] {consonant++;}
+[0-9] {digit++;}
+"+"|"-
+"|"*"|"/"|"%"|"=="|"!="|">"|"<"|">="|"<="|"&&"|"||"|"!"|"&"|"|"|"^"|"~"|">>"|"<<"|"="|"+="|"-=" {operator++;}
+"\n" {printf("Number of Vowels, Consonants, Digits, Operators :
+%d , %d , %d ,
+%d",vowel,consonant,digit,operator);vowel=0,consonant=0,digit=0,operator=0;}
+%%
+int yywrap()
+{
+return 1;
+}
+int main()
+{
+printf("Enter input : ");
+yylex();
+printf("Number of Vowels : %d",vowel);
+printf("Number of Consonants : %d",consonant);
+printf("Number of digits : %d",digit);
+printf("Number of operators = %d\n",operator);
+}
+
+
+8). Write a LEX specification to find whether the given input is positive or
+negative number .
+%{
+#include<stdio.h>
+%}
+%%
+"+"?[0-9]+"."?[0-9]+? {printf("%s is Positive Number \n", yytext);}"-"[0-9]+"."?[0-9]+? {printf("%s is Negative Number\n", yytext);}
+%%
+int yywrap()
+{
+return 1;
+}
+int main()
+{
+ printf("Enter the input : ");
+ yylex();
+}
+
+9). Write a LEX specification to find whether the given input is odd or even
+number .
+%{
+#include<stdio.h>
+%}
+%%
+[0-9]*[02468] {printf("%s is Even number",yytext);}
+[0-9]*[13579] {printf("%s is Odd number",yytext);}
+%%
+int yywrap()
+{
+return 1;
+}
+int main()
+{
+ printf("\nEnter the input : ");
+ yylex();
+}
+
+
+10). Write a LEX specification to find number of characters, words and lines
+from the given input file.
+%{
+int nlines,nwords,nchars;
+%}
+%%
+[\n] { nchars++;nlines++; }
+[^ \n\t]+ {nwords++, nchars=nchars+yyleng;}
+. {nchars++;}
+"\n" { printf("Number of Lines = %d\nNumber of Words = %d\nNumber of Characters =
+%d",nlines,nwords,nchars);}
+%%
+int yywrap(void)
+{
+ return 1;
+}
+int main(int argc, char*argv[])
+{
+yyin=fopen("bomb.txt","r");
+yylex();
+printf("Number of Lines = %d\nNumber of Words = %d\nNumber of Characters =
+%d",nlines,nwords,nchars);
+return 0;
+}
